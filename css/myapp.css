@@ -92,6 +92,9 @@ body {
     padding: 20px;
     box-shadow: var(--shadow-soft);
     transition: var(--transition);
+    /* Make card responsive */
+    max-width: 750px;
+    width: 100%;
     margin-bottom: 20px;
 }
 
@@ -347,4 +350,18 @@ body {
     height: 3px;
     background-color: var(--primary-color);
     border-radius: 2px;
+}
+
+.app-grid {
+    display: grid;
+    gap: 24px;
+    /* Default to 1 column on small screens */
+    grid-template-columns: 1fr;
+}
+
+/* On screens wider than 768px, switch to 2 columns */
+@media (min-width: 768px) {
+    .app-grid {
+        grid-template-columns: 1fr 1fr;
+    }
 }
