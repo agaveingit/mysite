@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+        QR Generator
+    </title>
+    <link rel="stylesheet" href="css/myapp.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="https://agaveingit.github.io/profile/" class="logo">Ageavava</a>
+            <nav class="nav">
+                <a href="index.html" class="nav-link">Home</a>
+                <a href="https://agaveingit.github.io/profile/" class="nav-link">About Us</a>
+                <a href="https://agaveingit.github.io/profile/" class="nav-link">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="main-content">
+        <section class="section">
+            <h2 class="section-title">Generator Kode QR</h2>
+            <div class="container2 card" style="width: 750px;">
+                <h2 class="subtitle">Buat Kode QR dari Teks atau Link</h2>
+                <form method="" action="">
+                    <input type="text" name="data" placeholder="Masukkan teks/url" class="input" value=""
+                        id="inputData">
+                    <select name="file_type" class="select">
+                        <option value="png">PNG</option>
+                        <option value="svg">SVG</option>
+                    </select>
+                    <button type="button" id="tombolPreview" class="button1">Preview QR</button>
+                    <button type="button" id="tombolDownload" class="button2">Download QR</button>
+                </form>
+                <!-- RESULT -->
+                <div id="hasilContainer" style="margin-top: 20px; text-align: center;">
+                    <!-- QR Code akan muncul di sini -->
+                </div>
+                <p id="pesanError"></p>
+            </div>
+        </section>
+    </div>
+    <!-- END -->
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3 class="footer-heading">Tentang Kami</h3>
+                <a href="#" class="footer-link">Sejarah</a>
+                <a href="#" class="footer-link">Tim Kami</a>
+                <a href="#" class="footer-link">Nilai-nilai</a>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-heading">Layanan</h3>
+                <a href="#" class="footer-link">Desain Web</a>
+                <a href="#" class="footer-link">UI/UX Design</a>
+                <a href="#" class="footer-link">Development</a>
+            </div>
+            <div class="footer-section">
+                <h3 class="footer-heading">Kontak</h3>
+                <a href="#" class="footer-link">Email</a>
+                <a href="#" class="footer-link">Telepon</a>
+                <a href="#" class="footer-link">Lokasi</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+        </div>
+    </footer>
+
+    <div style="height: 50px;"></div>
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="js/qr.js"></script>
+
+</body>
+
+</html>
