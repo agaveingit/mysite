@@ -1,68 +1,92 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const inputData = document.getElementById('inputData');
+// QR Code Generator
+document.addEventListener('DOMContentLoaded', function () {
     const tombolPreview = document.getElementById('tombolPreview');
     const tombolDownload = document.getElementById('tombolDownload');
+    const inputData = document.getElementById('inputData');
+    const selectFileType = document.querySelector('select[name="file_type"]');
     const hasilContainer = document.getElementById('hasilContainer');
     const pesanError = document.getElementById('pesanError');
-    let qrCodeInstance = null;
 
-    function generateQR() {
+    let qrCode = null;
+
+    if (tombolPreview) {
+        tombolPreview.addEventListener('click', function () {
+            generateQRCode(false);
+        });
+    }
+
+    if (tombolDownload) {
+        tombolDownload.addEventListener('click', function () {
+            generateQRCode(true);
+        });
+    }
+
+    function generateQRCode(download) {
         const data = inputData.value.trim();
-        hasilContainer.innerHTML = '';
-        pesanError.textContent = '';
-        pesanError.className = '';
+        const fileType = selectFileType.value;
 
-        if (data === '') {
-            pesanError.textContent = 'Error: Input tidak boleh kosong.';
-            pesanError.className = 'error-text';
+        if (!data) {
+            showError('Masukkan teks atau URL terlebih dahulu.');
             return;
         }
 
+        // Clear previous QR code and error
+        hasilContainer.innerHTML = '';
+        pesanError.textContent = '';
+
         try {
-            // Buat instance QRCode baru
-            qrCodeInstance = new QRCode(hasilContainer, {
+            // Create QR code
+            qrCode = new QRCode(hasilContainer, {
                 text: data,
-                width: 256,
-                height: 256,
-                colorDark: "#000000",
-                colorLight: "#ffffff",
+                width: 200,
+                height: 200,
+                colorDark: '#034078',
+                colorLight: '#ffffff',
                 correctLevel: QRCode.CorrectLevel.H
             });
-        } catch (e) {
-            if (e.message && e.message.toLowerCase().includes('overflow')) {
-                pesanError.textContent = 'Error: Data terlalu panjang untuk dienkode. Coba perpendek teks atau link Anda.';
-            } else {
-                pesanError.textContent = `Error: Terjadi masalah saat membuat QR code. (${e.message})`;
+
+            // If download requested
+            if (download) {
+                setTimeout(() => {
+                    downloadQRCode(fileType);
+                }, 500);
             }
-            pesanError.className = 'error-text';
+        } catch (error) {
+            showError('Terjadi kesalahan saat membuat QR code.');
+            console.error(error);
         }
     }
 
-    tombolPreview.addEventListener('click', (event) => {
-        event.preventDefault();
-        generateQR();
-    });
+    function downloadQRCode(fileType) {
+        if (!qrCode) return;
 
-    tombolDownload.addEventListener('click', (event) => {
-        event.preventDefault();
+        const canvas = hasilContainer.querySelector('canvas');
+        if (!canvas) return;
 
-        // 1. Cari elemen gambar QR code yang sudah dibuat
-        const qrImage = hasilContainer.querySelector('img');
-
-        // 2. Pastikan QR code sudah ada sebelum mencoba mengunduh
-        if (!qrImage) {
-            alert('Silakan buat QR code terlebih dahulu dengan menekan tombol "Preview QR".');
-            return;
+        if (fileType === 'png') {
+            const link = document.createElement('a');
+            link.download = 'qrcode.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        } else if (fileType === 'svg') {
+            // For SVG, we'd need a more complex implementation
+            // For now, we'll show a message
+            showError('Fitur download SVG sedang dalam pengembangan.');
         }
+    }
 
-        // 3. Buat elemen link sementara untuk memicu download
-        const downloadLink = document.createElement('a');
-        downloadLink.href = qrImage.src; // Ambil data gambar dari atribut src
-        downloadLink.download = 'qrcode.png'; // Tentukan nama file yang akan diunduh
+    function showError(message) {
+        pesanError.textContent = message;
+        pesanError.style.color = 'var(--text-error)';
+    }
 
-        // 4. Tambahkan link ke dokumen, klik, lalu hapus kembali
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
-    });
+    // Allow Enter key to trigger preview
+    if (inputData) {
+        inputData.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                if (tombolPreview) tombolPreview.click();
+            }
+        });
+    }
 });
